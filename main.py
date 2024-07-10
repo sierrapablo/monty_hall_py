@@ -2,37 +2,44 @@ import random
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+from dotenv import load_dotenv
 
 
-def simulate_monty_hall(num_simulations):
-    results = {'Change': [], 'Keep': []}
+def simulate_monty_hall(num_simulations: int) -> pd.DataFrame:
+    results: dict[str, list[bool]] = {'Change': [], 'Keep': []}
 
     for _ in range(num_simulations):
 
-        prize_door = random.randint(0, 2)
-        contestant_choice = random.randint(0, 2)
+        prize_door: int = random.randint(0, 2)
+        contestant_choice: int = random.randint(0, 2)
 
         # Monty Hall opens a door with a goat that has not been selected
-        monty_opens = next(door for door in range(
-            3) if door != prize_door and door != contestant_choice)
+        monty_opens: int = next(
+            door for door in range(3)
+            if door != prize_door
+            and door != contestant_choice
+        )
 
         # The contestant changes their first election
-        remaining_doors = [door for door in range(
-            3) if door != contestant_choice and door != monty_opens]
-        final_choice = remaining_doors[0]
+        remaining_doors: list[int] = [
+            door for door in range(3)
+            if door != contestant_choice
+            and door != monty_opens
+        ]
+        final_choice: int = remaining_doors[0]
 
         # End game results
-        win_change = final_choice == prize_door
-        win_keep = contestant_choice == prize_door
+        win_change: bool = final_choice == prize_door
+        win_keep: bool = contestant_choice == prize_door
 
         results['Change'].append(win_change)
         results['Keep'].append(win_keep)
 
-    df = pd.DataFrame(results)
+    df: pd.DataFrame = pd.DataFrame(results)
     return df.cumsum()
 
 
-def plot_results(df, save_dir):
+def plot_results(df: pd.DataFrame, save_dir: str) -> None:
 
     plt.figure(figsize=(10, 6))
 
@@ -61,14 +68,15 @@ def plot_results(df, save_dir):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
 
-    save_path = os.path.join(save_dir, 'monty_hall_results.png')
+    save_path: str = os.path.join(save_dir, 'monty_hall_results.png')
     plt.savefig(save_path)
 
 
 def main():
-    num_simulations = 1000000
-    save_dir = 'out'
-    df = simulate_monty_hall(num_simulations)
+    load_dotenv()
+    num_simulations: int = int(os.getenv("NUM_SIMULATIONS"))
+    save_dir: str = os.getenv("SAVE_DIR")
+    df: pd.DataFrame = simulate_monty_hall(num_simulations)
     plot_results(df, save_dir)
 
 
