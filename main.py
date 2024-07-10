@@ -60,8 +60,8 @@ def plot_results(df, save_dir):
 
 
 def main():
-    num_simulations = 100000
-    save_dir = 'results'
+    num_simulations = 1000000
+    save_dir = 'out'
     df = simulate_monty_hall(num_simulations)
     plot_results(df, save_dir)
 
