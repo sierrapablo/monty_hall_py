@@ -39,12 +39,18 @@ def plot_results(df, save_dir):
     plt.plot(df.index, df['Change'], label='Change', color='blue')
     plt.plot(df.index, df['Keep'], label='Keep', color='red')
 
-    plt.text(df.index[-1] - 2000, df["Change"].iloc[-1] + 1000,
-             f'{df["Change"].iloc[-1]}',
-             fontsize=10, color='blue')
-    plt.text(df.index[-1] - 2000, df["Keep"].iloc[-1] + 1000,
-             f'{df["Keep"].iloc[-1]}',
-             fontsize=10, color='red')
+    plt.text(
+        df.index[-1] - 2000,
+        df["Change"].iloc[-1] + 1000,
+        f'{df["Change"].iloc[-1]}',
+        fontsize=10, color='blue'
+    )
+    plt.text(
+        df.index[-1] - 2000,
+        df["Keep"].iloc[-1] + 1000,
+        f'{df["Keep"].iloc[-1]}',
+        fontsize=10, color='red'
+    )
 
     plt.title('Monty Hall Simulation Results')
     plt.xlabel('Number of Simulations')
